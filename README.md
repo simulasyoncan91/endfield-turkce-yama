@@ -4,6 +4,14 @@ Windows PC için OCR kullanmadan hazırlanan topluluk çevirisi ve yerel kurulum
 
 Çalışma devam ediyor. 27533267 kaynak sürümü için bu yayında **11.284 Türkçe karşılık** bulunur; 5.217 boş/ad/kod/simge kaydı aynen korunmuş, 150.765 kayıt henüz çevrilmemiştir. Bu sayılar tam İngilizce kaynak envanterine aittir; her kaydın oyunda kullanıldığı varsayılmaz. Güncel kapsam [ilerleme kaydında](translations/progress.json) tutulur.
 
+## Amaç ve dosya değişikliği hakkında
+
+Bu proje, dil engelini aşarak Arknights: Endfield’in hikâyesini ve oyun içi metinlerini Türkçe okuyabilmek için geliştirilen bir topluluk çeviri aracıdır. Ekrandaki yazıyı OCR ile okuyup üzerine çeviri yerleştirmek yerine, çeviri metinlerini oyunun yerel dil tablosuna uygular. Amaç oynanışta avantaj sağlamak değildir.
+
+Araç oyun dosyalarını değiştirir. Projenin çeviri amacı taşıması, yapımcının bu değişikliğe resmî izin verdiği anlamına gelmez. Yapımcının bunu nasıl sınıflandıracağına veya hesap yaptırımı uygulanmayacağına ilişkin garanti verilmez. Oyunun yayımladığı kurallar ve yapımcının kararları geçerlidir.
+
+Paketleri okumak ve yeniden hazırlamak için kullanılan iki açık kaynak VFS dosyasının görevleri, sabit değerlerin niteliği ve yapılan değişikliğin sınırları [teknik açıklamada](docs/AMAC_VE_TEKNIK_ACIKLAMA.md) anlatılır.
+
 ## Kurulum
 
 **Epic Games aracılığıyla indirilen sürümde çalıştı. Steam ve doğrudan kurulum sürümlerinde henüz denenmedi.** Şimdilik gerçek oyun testleri Epic sürümüne odaklanır. Steam ve doğrudan kurulum için konum bulma desteği vardır; bu destek oyun içi uyumluluğun doğrulandığı anlamına gelmez.
