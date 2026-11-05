@@ -2,7 +2,7 @@
 
 Windows PC için OCR kullanmadan hazırlanan topluluk çevirisi ve yerel kurulum aracı. Epic Games, Steam ve doğrudan resmî kurulum konumları tespit edilir; dosya biçimi her kurulumda yeniden doğrulanır. Türkçe karşılıklar metin kimlikleriyle eşleştirilir; oyun güncellendiğinde uyumlu kayıtlar yeni özgün kaynaklardan yeniden paketlenir.
 
-Çalışma devam ediyor. 27533267 kaynak sürümü için bu yayında **11.284 Türkçe karşılık** bulunur; 5.217 boş/ad/kod/simge kaydı aynen korunmuş, 150.765 kayıt henüz çevrilmemiştir. Bu sayılar tam İngilizce kaynak envanterine aittir; her kaydın oyunda kullanıldığı varsayılmaz. Güncel kapsam [ilerleme kaydında](translations/progress.json) tutulur.
+Çalışma devam ediyor. 27533267 kaynak sürümü için bu yayında **11.312 Türkçe karşılık** bulunur; 5.218 boş/ad/kod/simge kaydı aynen korunmuş, 150.736 kayıt henüz çevrilmemiştir. Bu sayılar tam İngilizce kaynak envanterine aittir; her kaydın oyunda kullanıldığı varsayılmaz. Güncel kapsam [ilerleme kaydında](translations/progress.json) tutulur.
 
 ## Amaç ve dosya değişikliği hakkında
 
