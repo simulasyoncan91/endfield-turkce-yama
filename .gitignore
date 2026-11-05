@@ -1,0 +1,40 @@
+# Yerel ayarlar ve kaynaklar
+config.json
+state/
+work/
+outputs/
+backups/
+yedek*/
+logs/
+*.log
+*.tmp
+*.bak
+.env
+.env.*
+
+# Oyun ikilileri ve çıkarılmış özgün paketler
+*.chk
+*.blc
+*.dll
+*.exe
+*.bytes
+*.assets
+*.resS
+*.dat
+*.pdb
+I18nTextTable_EN.original.json
+metadata*.plain
+installed.json
+reparsed.json
+original.bytes
+translated.bytes
+translated.chk
+
+# Python ve araç önbelleği
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,31 @@
+name: Çeviri hatası
+description: Yanlış anlam, terim veya anlatım bildirin.
+title: "[Çeviri] "
+labels: []
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: Oyun ve yama sürümü
+      placeholder: Oyunun VFS sürümü ve kullandığınız yama sürümü
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Metin nerede görünüyor
+      description: Ekran veya görev adını, varsa metin kimliğini belirtin.
+    validations:
+      required: true
+  - type: textarea
+    id: wording
+    attributes:
+      label: Görünen metin ve önerilen düzeltme
+      description: Sorunu ve öneriyi bağlamıyla açıklayın.
+    validations:
+      required: true
+  - type: textarea
+    id: image
+    attributes:
+      label: Ekran görüntüsü
+      description: Oyuncu kimliği, e-posta ve kişisel bilgileri kaldırarak ekleyin.

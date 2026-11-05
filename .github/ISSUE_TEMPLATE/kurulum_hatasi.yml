@@ -1,0 +1,37 @@
+name: Kurulum veya güncelleme hatası
+description: Kontrol, hazırlama, uygulama veya geri alma sorununu bildirin.
+title: "[Kurulum] "
+labels: []
+body:
+  - type: input
+    id: versions
+    attributes:
+      label: Oyun ve yama sürümü
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Hatanın oluştuğu aşama
+      options:
+        - Check
+        - Prepare
+        - Apply
+        - Restore
+        - Oyun içinde
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Yeniden üretme adımları
+      description: Resmi güncellemenin bitip bitmediğini ve hangi komutu kullandığınızı yazın.
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: Hata metni veya temizlenmiş kayıt
+      description: Kullanıcı adı ve kişisel dosya yollarını kaldırın. Hesap bilgisi veya oyun ikilisi eklemeyin.
+    validations:
+      required: true
