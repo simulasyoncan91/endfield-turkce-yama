@@ -1,6 +1,2 @@
-* text=auto
-*.py text eol=lf
-*.md text eol=lf
-*.json text eol=lf
-*.ps1 text eol=crlf
-*.cmd text eol=crlf
+# Preserve exact release bytes; catalog SHA-256 must survive Git checkout.
+* -text
