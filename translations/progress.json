@@ -1,10 +1,1 @@
-{
-  "source_build": 27533267,
-  "release": "0.1.1",
-  "translated": 11312,
-  "retained_not_translation": 5218,
-  "pending": 150736,
-  "source_total": 167266,
-  "status": "work_in_progress",
-  "game_layout_test": "Epic file integrity and semantic load checks passed; full in-game layout review pending; Steam/direct discovery synthetic only."
-}
+{"source_build":27533267,"release":"0.1.2","translated":17648,"retained_not_translation":7983,"pending":141635,"source_total":167266,"prepared_total":17649,"compatibility_held":1,"status":"work_in_progress","latest_story_group":"c31m3","latest_story_slice_records":105,"latest_story_slice_translations":67,"game_layout_test":"Text data and installer tests passed; this release was not installed or launched during publication. Full in-game layout review remains pending; Steam/direct discovery is synthetic only."}

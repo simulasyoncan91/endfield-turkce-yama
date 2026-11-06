@@ -21,6 +21,7 @@ CATALOG_SCHEMA = 'endfield.translation_catalog.v1'
 COMPACT_CATALOG_SCHEMA = 'endfield.translation_catalog.compact.v1'
 TOKEN_RE = re.compile(r'<[^>]*>|\{[^{}]*\}|%(?:\d+\$)?[-+0 #]*(?:\d+|\*)?(?:\.(?:\d+|\*))?[a-zA-Z%]|\r\n|\r|\n|\t')
 PERCENT_EXCEPTIONS = {
+ '3117923866152746089': ("Now I'm 1000% looking forward to it.", '% l'),
  '-6730231947724868112': ('Deliver or transfer now to get a 30% deposit', '% d'),
  '5807238442710209203': ('110% ORIGEOMETRY RETURNS!', '% O'),
  '-5844513251810116982': ('When the <@toast.key>Bonekrusher Executioner</> drops below 50% HP, he will become frenzied and gain greatly increased DEF', '% H'),

@@ -1,7 +1,1 @@
-{
-  "schema": "endfield.translation_release.v1",
-  "version": "0.1.1",
-  "catalog_path": "translations/catalog.json",
-  "catalog_sha256": "ac35059d1ebb60726c37b24ac2ac12c96f4c52eeefd10912b164bac0e0f8a11c",
-  "catalog_bytes": 3271156
-}
+{"schema":"endfield.translation_release.v1","version":"0.1.2","catalog_path":"translations/catalog.json","catalog_sha256":"5803d5982590b9e9ca19b1bf07c671d840b2e09cfd1d5acb73e40333b685487d","catalog_bytes":4963026}

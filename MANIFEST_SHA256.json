@@ -1,0 +1,238 @@
+{
+  "schema": "endfield.public_distribution_manifest.v1",
+  "version": "0.1.2",
+  "source_build": 27533267,
+  "translated": 17648,
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 83,
+      "sha256": "4b98d0660d313bde11f540616d412da1cd5dced25a1a2ddb3dbe2d68e005d0be"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/ceviri_hatasi.yml",
+      "bytes": 899,
+      "sha256": "3dde54c38c4b6bd5171c498646a6cfca3b7b459a8fc0619e37538cfa73f8a090"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/config.yml",
+      "bytes": 27,
+      "sha256": "13064e7bea658e01e718b414fbb7b3b244f36411fe25ee2055c151f7b534547a"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/kurulum_hatasi.yml",
+      "bytes": 996,
+      "sha256": "cf5d6d9b9480cae2e58f72e04d02009a40dac5ce72293c22bdd43f3523ae9c2e"
+    },
+    {
+      "path": ".github/ISSUE_TEMPLATE/yazi_tasmasi.yml",
+      "bytes": 772,
+      "sha256": "2dd8a74aac345fca246e37d888b886ff6baaba915ad3a8968430d56113939d65"
+    },
+    {
+      "path": ".github/workflows/checks.yml",
+      "bytes": 566,
+      "sha256": "88881a6bbcea3265d73028f3e1ba49da54b5a284c9e96bf4bf3bb527cbfece6b"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 455,
+      "sha256": "7d214a051954738882ec97a91a13dd6d4784b83b26f3cd13803e192c8ee219fb"
+    },
+    {
+      "path": "Kur.cmd",
+      "bytes": 301,
+      "sha256": "57674c4e20c06706fb1f3ecc95c9dcb07e339de3fbf68718888239832155d0a6"
+    },
+    {
+      "path": "Kur.ps1",
+      "bytes": 2517,
+      "sha256": "7c863ba62f546ede5cc6c2ba068041b020f8954efb203258e38629a9b1d394f5"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1124,
+      "sha256": "071ab0be226339171c7f25c2e90ef8af93c8a43b6b9ec7299a1ba90ed0a25c38"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7239,
+      "sha256": "301b7ad0c44a625ffa822b17c562c8ba1515c9952fbdfd25847cc55631cecaf2"
+    },
+    {
+      "path": "SECURITY.md",
+      "bytes": 829,
+      "sha256": "4c8d5967031a5240427c673cf31dcf303eaa7e5dba831dbbd754d781e31cfd32"
+    },
+    {
+      "path": "Turkce-Ile-Baslat.cmd",
+      "bytes": 315,
+      "sha256": "0ec909849975c5651371ff21dbda4ff08000824157f32ad2d82bc00b52ca060e"
+    },
+    {
+      "path": "Turkce-Ile-Baslat.ps1",
+      "bytes": 6376,
+      "sha256": "0d1819e7d6b8b861234905a4426d12c18d96cc87d9064b8b4283ff80ba7e369a"
+    },
+    {
+      "path": "Yenile-Ceviri.ps1",
+      "bytes": 15076,
+      "sha256": "c562181a3fc2f00a1b1b23ee88b7d2d010ab92803b4aba794926992ed06c558d"
+    },
+    {
+      "path": "bin/Find-Endfield.ps1",
+      "bytes": 9063,
+      "sha256": "33e3bed2457007cdcc0da411aadd7e693be6ce8c0a47ffd9369ea7fb941b0fa4"
+    },
+    {
+      "path": "bin/Update-TranslationCatalog.ps1",
+      "bytes": 9187,
+      "sha256": "7c33a5eee95ea6c1ba931315fbfd1a52d7a743694f1e8a8a25df0e420b9837de"
+    },
+    {
+      "path": "bin/VfsBridge.ps1",
+      "bytes": 18687,
+      "sha256": "d4819a4f95eaa056eccd398be7da91d0ab49152d762bb3bae6f0ecc03d11d5bc"
+    },
+    {
+      "path": "bin/build_references.py",
+      "bytes": 1295,
+      "sha256": "6076e3eddd7c728c08e53d564edcec39cf302278cfdcfd3e3920d68947c5d19f"
+    },
+    {
+      "path": "bin/endfield_update.py",
+      "bytes": 37081,
+      "sha256": "437cfc9f4a4ad727f9253f8b11fd62c051652efdacbea5c03cd9670c9a9ed899"
+    },
+    {
+      "path": "bin/reader/EndfieldSparkBuffer.cs",
+      "bytes": 30951,
+      "sha256": "3bc7ba27b7af07b567081b8ae2b4ba8278201fe2ec7f428240d8188cd85655f5"
+    },
+    {
+      "path": "bin/reader/EndfieldVfsCrypto.cs",
+      "bytes": 5758,
+      "sha256": "fd394bc02e7b0cf2c52d7adf1574ea342cf092f96686714cfaf3c16130148a28"
+    },
+    {
+      "path": "bin/reader/EndfieldVfsHash.cs",
+      "bytes": 11236,
+      "sha256": "0670813c6ce35c6fe1ae3eb74cf7380daf17dd82118ebadf2fa8a3e16502edd7"
+    },
+    {
+      "path": "bin/reader/EndfieldVfsLoader.cs",
+      "bytes": 33240,
+      "sha256": "40297e0c94cd2ba093d9549850c8c38151ae3d6462b9c7258d3aa7bdecb6111b"
+    },
+    {
+      "path": "bin/reader/EndfieldVfsTypes.cs",
+      "bytes": 13504,
+      "sha256": "14eebfe2700cb2d41238556821afdf9d5312c74a02e95b80550f28a4d6004aa9"
+    },
+    {
+      "path": "bin/reader/LocalVfsCodec.cs",
+      "bytes": 1096,
+      "sha256": "3baa0d6f4fd61f591b31fb08e85c9ff174b150a47fd78b0cd79a66fc794aad24"
+    },
+    {
+      "path": "bin/translation_core.py",
+      "bytes": 26026,
+      "sha256": "4eddaace4b9e3fb8e22dc03cc3a8c834ae5c838426cdd2c551876679c6c54007"
+    },
+    {
+      "path": "docs/AMAC_VE_TEKNIK_ACIKLAMA.md",
+      "bytes": 3345,
+      "sha256": "45ec9f5abceb986f085f1b8588833f22c0d80071efadc8b6af2695f91387a354"
+    },
+    {
+      "path": "docs/CEVIRI_NASIL_YAPILIR.md",
+      "bytes": 4570,
+      "sha256": "9af8249a391c28343a709ba8fc634a8d51467288e184d4a6dd4047b495dab342"
+    },
+    {
+      "path": "docs/KATKI.md",
+      "bytes": 2504,
+      "sha256": "c02a6b55e3590255d9c1f6a84b359196c7abcba7d2b14e948f1d73f90a348938"
+    },
+    {
+      "path": "docs/MANUEL_KURULUM.md",
+      "bytes": 4829,
+      "sha256": "b41f5552947be89ef81dbb42c239714eaa271892cac98dd360fd144a7b9ec289"
+    },
+    {
+      "path": "docs/SURUM_NOTLARI.md",
+      "bytes": 1581,
+      "sha256": "638c7bd39d4dfb5e7910d3277910d378b089086947fbfa4076c793dfca9dcf41"
+    },
+    {
+      "path": "docs/THIRD_PARTY_NOTICES.md",
+      "bytes": 1020,
+      "sha256": "e6103319cffe8ab7bca4b7ec8cdb66f2b9fade7172419cb1ecf0d535c812dd61"
+    },
+    {
+      "path": "docs/third-party/AnimeStudio-LICENSE.txt",
+      "bytes": 1158,
+      "sha256": "18e68207defdf52d9bc1b098af4e1620f3b498e76131114ae8d8d3418f5866a7"
+    },
+    {
+      "path": "tests/test_core_compact.py",
+      "bytes": 3141,
+      "sha256": "de771d2e82b65c518426015714f278731cbdafd0a48bfd6ac6d1f1d2e364c059"
+    },
+    {
+      "path": "tests/test_core_independent.py",
+      "bytes": 10798,
+      "sha256": "3b9f2483c23f3bdbfb01169725bb411d88abca61ebb3e4d1b46e4e37e36d2480"
+    },
+    {
+      "path": "tests/test_discovery.ps1",
+      "bytes": 3682,
+      "sha256": "69ed29dff9c8b9bf1686eac03f04d2689786e818e8f60bd4283dccc6ceae49a6"
+    },
+    {
+      "path": "tests/test_percent_literal04.py",
+      "bytes": 1417,
+      "sha256": "b135f8ad69d65601063ae0044de04d1321cb14df0c4af6c38debd5826f1a224e"
+    },
+    {
+      "path": "tests/test_plan_binding.py",
+      "bytes": 2872,
+      "sha256": "582ef5c689c7487efa69af16c05415a608b73499963d4ff7559939dd1e113558"
+    },
+    {
+      "path": "tests/test_process_guard.ps1",
+      "bytes": 2226,
+      "sha256": "f20a8fbe9146d0849ee484099e8ed721c05031b66f78c00e8732b65f2562720d"
+    },
+    {
+      "path": "tests/test_public_distribution.py",
+      "bytes": 1164,
+      "sha256": "c4fc2cacc863fa460bd3dc9aec6977bb955b503d4bbf461b6d11c5f99158b39e"
+    },
+    {
+      "path": "tests/test_release_integrity.py",
+      "bytes": 1281,
+      "sha256": "bfd81f550d88cadc9a35a14a782aee3f22bb7b630c0b53435fd257a9376ab3b3"
+    },
+    {
+      "path": "tests/test_wrapper.ps1",
+      "bytes": 6254,
+      "sha256": "3fcafd39dac6e9bb6dffefa36a45aeb31b9a50d31874af2b027d541a8e0ff027"
+    },
+    {
+      "path": "translations/catalog.json",
+      "bytes": 4963026,
+      "sha256": "5803d5982590b9e9ca19b1bf07c671d840b2e09cfd1d5acb73e40333b685487d"
+    },
+    {
+      "path": "translations/latest.json",
+      "bytes": 215,
+      "sha256": "357a80e65c55b913be9b98b225125bb58c4096cb184991b0aafc2c685a279a41"
+    },
+    {
+      "path": "translations/progress.json",
+      "bytes": 516,
+      "sha256": "a3507590467c4b0f02ed762c8c7f2b4bfe518b22ae3494beecf502f4e33f6510"
+    }
+  ]
+}

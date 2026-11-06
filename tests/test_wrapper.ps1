@@ -1,4 +1,4 @@
-﻿$ErrorActionPreference='Stop'
+$ErrorActionPreference='Stop'
 $workspace=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 [void][IO.Directory]::CreateDirectory((Join-Path $workspace 'state\tests\review'))
 . "$workspace\Turkce-Ile-Baslat.ps1" -FunctionsOnly
@@ -20,6 +20,7 @@ $two=Catalog-Bytes 'İki';$script:descriptor=Descriptor '0.2.0' $two;$script:rem
 function Get-EndfieldHttpsBytes([string]$Uri,[long]$MaxBytes){$script:calls.Add($Uri);if($script:offline){throw 'Synthetic offline'};if($Uri.EndsWith('latest.json')){return ,[Text.Encoding]::UTF8.GetBytes(($script:descriptor|ConvertTo-Json -Compress))};return ,$script:remoteCatalogBytes}
 $r=Update-EndfieldTranslationCatalog -RepositoryRoot $root -LocalCatalog $local;Assert-True ($r.Status -eq 'DOWNLOADED_VERIFIED_DATA' -and $r.Version -eq '0.2.0') 'New data catalog was not cached'
 $cached=$r.CatalogPath;$hash=(Get-FileHash -LiteralPath $cached).Hash;$script:calls.Clear()
+$r=Update-EndfieldTranslationCatalog -RepositoryRoot $root -LocalCatalog $local -Enabled $false;Assert-True ($r.Status -eq 'LOCAL_ONLY' -and $r.CatalogPath -eq $local -and $script:calls.Count -eq 0) 'Explicit local catalog was overridden by cache or network'
 $r=Update-EndfieldTranslationCatalog -RepositoryRoot $root -LocalCatalog $local;Assert-True ($r.Status -eq 'CURRENT' -and $script:calls.Count -eq 1) 'Repeat check downloaded or downgraded catalog'
 $script:descriptor=Descriptor '0.0.9' $one;$script:calls.Clear();$r=Update-EndfieldTranslationCatalog -RepositoryRoot $root -LocalCatalog $local;Assert-True ($r.Status -eq 'REMOTE_OLDER_IGNORED' -and $r.CatalogPath -eq $cached -and $script:calls.Count -eq 1) 'Downgrade not blocked'
 $script:offline=$true;$r=Update-EndfieldTranslationCatalog -RepositoryRoot $root -LocalCatalog $local;Assert-True ($r.Status -eq 'OFFLINE_OR_REMOTE_REJECTED' -and $r.CatalogPath -eq $cached) 'Offline cache not retained'
@@ -33,5 +34,5 @@ Assert-True ($script:applyCalls -eq 1) 'Session close refresh count differs'
 $script:iterations=1;$script:applyCalls=0
 Wait-EndfieldSessionAndRefresh -Root $root -Installation ([pscustomobject]@{InstallRoot=$root;GameData=$root}) -SelectedCatalog $local -OfficialLauncher '' -StartupTimeoutSeconds 0 -IdleSeconds 0 -PollSeconds 0
 Assert-True ($script:applyCalls -eq 0) 'Never-seen game triggered repair'
-@{status='PASS';test_groups=13;fixture=$root;actual_network_requests=0;actual_game_launches=0;actual_game_writes=0}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $workspace 'state\tests\review\wrapper_test_result.json')
+@{status='PASS';test_groups=14;fixture=$root;actual_network_requests=0;actual_game_launches=0;actual_game_writes=0}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $workspace 'state\tests\review\wrapper_test_result.json')
 Write-Output 'PASS: descriptor guards, data-only remote cache, offline/no-downgrade/hash rejection and session lifecycle synthetic checks.'

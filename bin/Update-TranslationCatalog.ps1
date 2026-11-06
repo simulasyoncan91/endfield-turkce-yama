@@ -1,4 +1,4 @@
-﻿function Get-EndfieldReleaseVersion {
+function Get-EndfieldReleaseVersion {
  param([Parameter(Mandatory)][string]$Text)
  if($Text -notmatch '^\d+\.\d+\.\d+(?:\.\d+)?$'){throw 'Çeviri sürümü geçerli değil.'}
  $v=$null;if(-not [Version]::TryParse($Text,[ref]$v)){throw 'Çeviri sürümü okunamadı.'};return $v
@@ -69,6 +69,7 @@ function Update-EndfieldTranslationCatalog {
  if([IO.File]::Exists($localDescriptor)){
   try{$d=Get-Content -LiteralPath $localDescriptor -Raw|ConvertFrom-Json;$v=Get-EndfieldReleaseVersion ([string]$d.version);if($d.catalog_sha256 -eq $currentHash){$currentVersion=$v}}catch{Write-Verbose 'Local release descriptor unavailable; catalog itself remains verified.'}
  }
+ if(-not $Enabled){return [pscustomobject]@{CatalogPath=$local;Version=$currentVersion.ToString();Status='LOCAL_ONLY'}}
  if([IO.File]::Exists($pointer)){
   try{
    $saved=Get-Content -LiteralPath $pointer -Raw|ConvertFrom-Json;if($saved.repository -ne $Repository -or $saved.branch -ne $Branch){throw 'Cache repository differs'};$v=Get-EndfieldReleaseVersion ([string]$saved.version);$cache=Join-Path $state ([string]$saved.file)
@@ -78,7 +79,6 @@ function Update-EndfieldTranslationCatalog {
    if($v -ge $currentVersion){$selected=$cache;$currentVersion=$v;$currentHash=$saved.sha256}
   }catch{Write-Warning 'Önbellekteki çeviri sürümü doğrulanamadı; onaylı yerel katalog kullanılacak.'}
  }
- if(-not $Enabled){return [pscustomobject]@{CatalogPath=$selected;Version=$currentVersion.ToString();Status='LOCAL_ONLY'}}
  try{
   $prefix=Test-EndfieldRepository $Repository $Branch
   $bytes=Get-EndfieldHttpsBytes ($prefix+'translations/latest.json') 32768
