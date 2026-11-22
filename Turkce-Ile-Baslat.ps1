@@ -49,7 +49,10 @@ function Wait-EndfieldSessionAndRefresh {
 if($FunctionsOnly){return}
 $configPath=Join-Path $repositoryRoot 'config.json';$config=if([IO.File]::Exists($configPath)){Get-Content -LiteralPath $configPath -Raw|ConvertFrom-Json}else{$null}
 if(-not $GameData){$GameData=Get-EndfieldConfigValue $config 'GameData' $null}
-if(-not $Platform){$Platform=Get-EndfieldConfigValue $config 'Platform' $null}
+if(-not $Platform){
+ $configuredPlatform=Get-EndfieldConfigValue $config 'Platform' $null
+ if($configuredPlatform){$Platform=$configuredPlatform}
+}
 $found=@(Get-EndfieldInstallations -GameData $GameData)
 if($Platform){$found=@($found|Where-Object Platform -eq $Platform)}
 if($found.Count -ne 1){
@@ -57,7 +60,8 @@ if($found.Count -ne 1){
  throw 'Oyun konumu belirsiz. config.json GameData/Platform veya -GameData ile bir kurulum seç.'
 }
 $install=$found[0];if($install.Platform -eq 'Ambiguous'){throw 'Aynı kurulum birden fazla platforma ait görünüyor; platform kanıtını kontrol et.'}
-$approved=if($Catalog){$Catalog}else{Get-EndfieldConfigValue $config 'ApprovedCatalog' 'translations\catalog.json'}
+$approved=if($Catalog){$Catalog}else{Get-EndfieldConfigValue $config 'ApprovedCatalog' 'translations\current\catalog.json'}
+if(-not $Catalog -and ($approved -replace '\\','/') -eq 'translations/catalog.json'){$approved='translations/current/catalog.json'}
 if(-not [IO.Path]::IsPathRooted($approved)){$approved=Join-Path $repositoryRoot $approved}
 $repo=Get-EndfieldConfigValue $config 'UpdateRepository' 'simulasyoncan91/endfield-turkce-yama';$branch=Get-EndfieldConfigValue $config 'UpdateBranch' 'main';$enabled=[bool](Get-EndfieldConfigValue $config 'CheckTranslationUpdates' $true)
 if($NoRemote){$enabled=$false}

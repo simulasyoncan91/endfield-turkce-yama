@@ -1,5 +1,13 @@
 # Sürüm notları
 
+## v0.2.0
+
+Epic PC'nin 27950529 numaralı oyun verisinde **135.729 Türkçe karşılık** doğrulandı. 167.300 metin kaydından 31.571'i özgün haliyle kaldı. Önceki çalışma kataloğundan yedi metin, oyun güncellemesiyle kullanıldıkları bağlam değiştiği için ayrıldı. Yeni 34 kayıtta da özgün metin korunur.
+
+Kurulum için bu sürümün ZIP dosyasını açıp `Kur.cmd` çalıştırın. Oyunda metin dili **English** olmalıdır. 0.1.x kurucularının sınırı 32 MiB olduğu için onların veri yolu v0.1.2'de tutulur. Yeni kurucu, geniş kataloğu paketle birlikte getirir ve sonraki açılışlarda güncellemeleri `translations/current/latest.json` üzerinden denetler. Eski kurulumun aynı klasörüne açarken kişisel `state/` ve `config.json` dosyalarınızı koruyun.
+
+Yeni katalogda yalnızca çeviriler, kayıt kimlikleri, kaynak özetleri, bağlam tanımları ve korunması gereken biçim işaretleri yayımlanır. İki yüzde ifadesinin denetimi yalnızca doğrulanmış metin çiftlerine uygulanır. Güncel Epic kurulumunda 167.300 kayıt geri okunup karşılaştırıldı. Dağıtımdaki katalog ve kurucu aynı kaynaktan oyuna kurulmuş dil tablosunu bayt bayt yeniden üretti. Tüm oyun ekranlarında görünüm ve metin taşması denetimi sürmektedir. Steam ve doğrudan kurulumların oyun içi uyumluluğu ayrıca doğrulanmalıdır.
+
 ## v0.1.2
 
 27533267 kaynak sürümü için kamu kataloğu 11.312 karşılıktan **17.648 Türkçe karşılığa** yükseldi. c33m2 grubu tamamlandı; c31m3 **Savaşçının Azmi** açılışındaki dört sahne ile görev başlığı ve açıklaması için 105 kayıt işlendi: 67 çeviri, 38 korunan özel ad. c31m3 grubunun tamamı henüz bitmedi.

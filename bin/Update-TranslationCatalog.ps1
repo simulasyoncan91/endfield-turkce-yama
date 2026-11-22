@@ -13,17 +13,17 @@ function Test-EndfieldReleaseDescriptor {
  $prefix=Test-EndfieldRepository $Repository $Branch
  if($Descriptor.schema -ne 'endfield.translation_release.v1'){throw 'Çeviri sürüm bildirimi desteklenmiyor.'}
  [void](Get-EndfieldReleaseVersion ([string]$Descriptor.version))
- if($Descriptor.catalog_path -ne 'translations/catalog.json'){throw 'Uzak katalog yolu izinli konumla eşleşmiyor.'}
+ if($Descriptor.catalog_path -ne 'translations/current/catalog.json'){throw 'Uzak katalog yolu izinli konumla eşleşmiyor.'}
  if($Descriptor.catalog_sha256 -notmatch '^[a-fA-F0-9]{64}$'){throw 'Uzak katalog SHA-256 geçersiz.'}
  if($Descriptor.catalog_bytes -isnot [long] -and $Descriptor.catalog_bytes -isnot [int]){throw 'Katalog boyutu tam sayı olmalı.'}
- if($Descriptor.catalog_bytes -lt 1 -or $Descriptor.catalog_bytes -gt 33554432){throw 'Uzak katalog boyutu sınırı aşıyor.'}
+ if($Descriptor.catalog_bytes -lt 1 -or $Descriptor.catalog_bytes -gt 67108864){throw 'Uzak katalog boyutu sınırı aşıyor.'}
  $uri=[Uri]($prefix+$Descriptor.catalog_path)
  if($uri.Scheme -ne 'https' -or $uri.Host -ne 'raw.githubusercontent.com' -or -not $uri.AbsoluteUri.StartsWith($prefix,[StringComparison]::Ordinal)){throw 'Uzak katalog depo kökünden çıkıyor.'}
  return $uri.AbsoluteUri
 }
 function Test-EndfieldCompactCatalogBytes {
  param([Parameter(Mandatory)][byte[]]$Bytes)
- if($Bytes.Length -lt 1 -or $Bytes.Length -gt 33554432){throw 'Katalog boyutu geçersiz.'}
+ if($Bytes.Length -lt 1 -or $Bytes.Length -gt 67108864){throw 'Katalog boyutu geçersiz.'}
  $obj=[Text.UTF8Encoding]::new($false,$true).GetString($Bytes)|ConvertFrom-Json -Depth 100
  if($obj.schema -ne 'endfield.translation_catalog.compact.v1' -or $obj.source_build -is [bool] -or ($obj.source_build -isnot [long] -and $obj.source_build -isnot [int]) -or $obj.source_build -le 0){throw 'Yalnız kaynak metin içermeyen kompakt katalog desteklenir.'}
  if($null -eq $obj.records -or $obj.records -isnot [array]){throw 'Katalog kayıt listesi yok.'}
@@ -65,7 +65,7 @@ function Update-EndfieldTranslationCatalog {
  [void](Test-EndfieldCompactCatalogBytes ([IO.File]::ReadAllBytes($local)))
  $state=Join-Path $RepositoryRoot 'state\catalog_updates';[void][IO.Directory]::CreateDirectory($state);$pointer=Join-Path $state 'current.json'
  $selected=$local;$currentVersion=[Version]'0.0.0';$currentHash=(Get-FileHash -LiteralPath $local -Algorithm SHA256).Hash.ToLowerInvariant()
- $localDescriptor=Join-Path $RepositoryRoot 'translations\latest.json'
+ $localDescriptor=Join-Path $RepositoryRoot 'translations\current\latest.json'
  if([IO.File]::Exists($localDescriptor)){
   try{$d=Get-Content -LiteralPath $localDescriptor -Raw|ConvertFrom-Json;$v=Get-EndfieldReleaseVersion ([string]$d.version);if($d.catalog_sha256 -eq $currentHash){$currentVersion=$v}}catch{Write-Verbose 'Local release descriptor unavailable; catalog itself remains verified.'}
  }
@@ -81,12 +81,12 @@ function Update-EndfieldTranslationCatalog {
  }
  try{
   $prefix=Test-EndfieldRepository $Repository $Branch
-  $bytes=Get-EndfieldHttpsBytes ($prefix+'translations/latest.json') 32768
+  $bytes=Get-EndfieldHttpsBytes ($prefix+'translations/current/latest.json') 32768
   $descriptor=[Text.UTF8Encoding]::new($false,$true).GetString($bytes)|ConvertFrom-Json
   $catalogUri=Test-EndfieldReleaseDescriptor $descriptor $Repository $Branch;$next=Get-EndfieldReleaseVersion ([string]$descriptor.version)
   if($next -lt $currentVersion){return [pscustomobject]@{CatalogPath=$selected;Version=$currentVersion.ToString();Status='REMOTE_OLDER_IGNORED'}}
   if($next -eq $currentVersion){if($descriptor.catalog_sha256 -ne $currentHash){throw 'Aynı sürüm numarası farklı içerikle sunuluyor.'};return [pscustomobject]@{CatalogPath=$selected;Version=$currentVersion.ToString();Status='CURRENT'}}
-  $catalogBytes=Get-EndfieldHttpsBytes $catalogUri 33554432
+  $catalogBytes=Get-EndfieldHttpsBytes $catalogUri 67108864
   if($catalogBytes.Length -ne $descriptor.catalog_bytes -or [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($catalogBytes)).ToLowerInvariant() -ne $descriptor.catalog_sha256.ToLowerInvariant()){throw 'İndirilen katalog özeti/boyutu eşleşmiyor.'}
   [void](Test-EndfieldCompactCatalogBytes $catalogBytes)
   $filename='catalog-'+$next.ToString()+'-'+$descriptor.catalog_sha256.ToLowerInvariant()+'.json';$cache=Join-Path $state $filename

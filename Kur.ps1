@@ -10,7 +10,7 @@ if($Platform){$installs=@($installs|Where-Object Platform -eq $Platform)}
 if($installs.Count -ne 1){$installs|Select-Object Platform,GameData|Format-Table|Out-Host;throw 'Bir kurulum secmek icin -GameData ve gerekirse -Platform kullanin.'}
 $chosen=$installs[0]
 $configPath=Join-Path $root 'config.json'
-$config=[ordered]@{GameData=$chosen.GameData;Platform=$chosen.Platform;OfficialLauncher=$chosen.OfficialLauncher;ApprovedCatalog='translations/catalog.json';UpdateRepository='simulasyoncan91/endfield-turkce-yama';UpdateBranch='main';CheckTranslationUpdates=$true}
+$config=[ordered]@{GameData=$chosen.GameData;Platform=$chosen.Platform;OfficialLauncher=$chosen.OfficialLauncher;ApprovedCatalog='translations/current/catalog.json';UpdateRepository='simulasyoncan91/endfield-turkce-yama';UpdateBranch='main';CheckTranslationUpdates=$true}
 if(Test-Path -LiteralPath $configPath){
  $old=Get-Content -LiteralPath $configPath -Raw|ConvertFrom-Json
  if($old.GameData -and [IO.Path]::GetFullPath($old.GameData) -ne [IO.Path]::GetFullPath($chosen.GameData)){throw 'Mevcut ayar baska kuruluma ait; ayari yedekleyip acikca yeni kurulumu secin.'}

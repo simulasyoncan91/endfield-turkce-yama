@@ -1,8 +1,8 @@
 {
   "schema": "endfield.public_distribution_manifest.v1",
-  "version": "0.1.2",
-  "source_build": 27533267,
-  "translated": 17648,
+  "version": "0.2.0",
+  "source_build": 27950529,
+  "translated": 135729,
   "files": [
     {
       "path": ".gitattributes",
@@ -46,8 +46,8 @@
     },
     {
       "path": "Kur.ps1",
-      "bytes": 2517,
-      "sha256": "7c863ba62f546ede5cc6c2ba068041b020f8954efb203258e38629a9b1d394f5"
+      "bytes": 2525,
+      "sha256": "a305e4ccc65b587a60acd55b2cf2086cd585a8d9ba310945726a8ff95edaac12"
     },
     {
       "path": "LICENSE",
@@ -56,8 +56,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 8225,
-      "sha256": "116f2c138a90313a22786faa60866909f7c1a173cae84baeee31757e89afa004"
+      "bytes": 8105,
+      "sha256": "fa57eaeec96985fca3e030affda4100e8c79a6d5b40e02c4ca47bfe3dbf3fa68"
     },
     {
       "path": "SECURITY.md",
@@ -71,13 +71,13 @@
     },
     {
       "path": "Turkce-Ile-Baslat.ps1",
-      "bytes": 6376,
-      "sha256": "0d1819e7d6b8b861234905a4426d12c18d96cc87d9064b8b4283ff80ba7e369a"
+      "bytes": 6589,
+      "sha256": "4758c102a848ed1f42a0c7d96072292f8b6c12f5dabc80414dfc052209cd6aea"
     },
     {
       "path": "Yenile-Ceviri.ps1",
-      "bytes": 15076,
-      "sha256": "c562181a3fc2f00a1b1b23ee88b7d2d010ab92803b4aba794926992ed06c558d"
+      "bytes": 18018,
+      "sha256": "131eed199c584e238314bd013e507dff84664866b90f50f5bda2674ab9e4dd53"
     },
     {
       "path": "bin/Find-Endfield.ps1",
@@ -86,13 +86,13 @@
     },
     {
       "path": "bin/Update-TranslationCatalog.ps1",
-      "bytes": 9187,
-      "sha256": "7c33a5eee95ea6c1ba931315fbfd1a52d7a743694f1e8a8a25df0e420b9837de"
+      "bytes": 9211,
+      "sha256": "2aaff536643fb78385b1a85e91fec466c274f402b19f7885fbf4954cc520e197"
     },
     {
       "path": "bin/VfsBridge.ps1",
-      "bytes": 18687,
-      "sha256": "d4819a4f95eaa056eccd398be7da91d0ab49152d762bb3bae6f0ecc03d11d5bc"
+      "bytes": 18665,
+      "sha256": "636e833b45fa89039c3c21480edbb730f8e181f4ff3ca7cff1d472a3b783c981"
     },
     {
       "path": "bin/build_references.py",
@@ -136,8 +136,8 @@
     },
     {
       "path": "bin/translation_core.py",
-      "bytes": 26026,
-      "sha256": "4eddaace4b9e3fb8e22dc03cc3a8c834ae5c838426cdd2c551876679c6c54007"
+      "bytes": 27100,
+      "sha256": "5f4e6fdd355c81ce4ad5e8af793de2003adfb68ea5d2519cf3bd672c37d8930e"
     },
     {
       "path": "docs/AMAC_VE_TEKNIK_ACIKLAMA.md",
@@ -161,8 +161,8 @@
     },
     {
       "path": "docs/SURUM_NOTLARI.md",
-      "bytes": 1581,
-      "sha256": "638c7bd39d4dfb5e7910d3277910d378b089086947fbfa4076c793dfca9dcf41"
+      "bytes": 2959,
+      "sha256": "ad9c032e0ceedace12beaadb4215253b47beddb66601b97bf7173f8971f85df2"
     },
     {
       "path": "docs/THIRD_PARTY_NOTICES.md",
@@ -183,6 +183,11 @@
       "path": "tests/test_core_independent.py",
       "bytes": 10798,
       "sha256": "3b9f2483c23f3bdbfb01169725bb411d88abca61ebb3e4d1b46e4e37e36d2480"
+    },
+    {
+      "path": "tests/test_current_channel.py",
+      "bytes": 2446,
+      "sha256": "ba142fdbaef6e0878c8f8548ff5fa5d0f56d7b00b19923c9fd76036bb7ba1095"
     },
     {
       "path": "tests/test_discovery.ps1",
@@ -216,13 +221,28 @@
     },
     {
       "path": "tests/test_wrapper.ps1",
-      "bytes": 6254,
-      "sha256": "3fcafd39dac6e9bb6dffefa36a45aeb31b9a50d31874af2b027d541a8e0ff027"
+      "bytes": 6294,
+      "sha256": "9d48d9374d61f3050addfaa48c5ee80106fab2fa3fc798820388d3a288745cbb"
     },
     {
       "path": "translations/catalog.json",
       "bytes": 4963026,
       "sha256": "5803d5982590b9e9ca19b1bf07c671d840b2e09cfd1d5acb73e40333b685487d"
+    },
+    {
+      "path": "translations/current/catalog.json",
+      "bytes": 42767930,
+      "sha256": "0c4115f786b36763b5d976e1506ab7ee22ed5c91649265b48cad55611528fa5b"
+    },
+    {
+      "path": "translations/current/latest.json",
+      "bytes": 223,
+      "sha256": "c412fccb5024261f87e06c9d0ea2b61cf97728c20d63dc3ec4ce1b31cc3c302f"
+    },
+    {
+      "path": "translations/current/progress.json",
+      "bytes": 223,
+      "sha256": "48d2b45c9f5723170c5c5a136d1cd190664b97a99863087e2304a9d4fe50f921"
     },
     {
       "path": "translations/latest.json",

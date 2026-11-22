@@ -13,7 +13,7 @@
 
 Windows PC için OCR kullanmadan hazırlanan topluluk çevirisi ve yerel kurulum aracı. Epic Games, Steam ve doğrudan resmî kurulum konumları tespit edilir; dosya biçimi her kurulumda yeniden doğrulanır. Türkçe karşılıklar metin kimlikleriyle eşleştirilir; oyun güncellendiğinde uyumlu kayıtlar yeni özgün kaynaklardan yeniden paketlenir.
 
-Çalışma devam ediyor. 27533267 kaynak sürümü için bu yayında **17.648 Türkçe karşılık** bulunur; 7.983 boş/ad/kod/simge kaydı aynen korunmuş, 141.635 kayıt bu kamu kataloğunda İngilizce kalır. Hazır çalışma kataloğu 17.649 karşılık içerir; eski 0.1.x kurucularıyla uyum için tek bir yüzde ifadesi kamu verisinde bekletilir. Bu sayılar tam İngilizce kaynak envanterine aittir; her kaydın oyunda kullanıldığı varsayılmaz. Güncel kapsam [ilerleme kaydında](translations/progress.json), sürüm değişiklikleri [yayın notlarında](docs/SURUM_NOTLARI.md) tutulur.
+**v0.2.0** ile Epic PC'nin 27950529 sürümünde 135.729 Türkçe karşılık doğrulandı. 167.300 metin kaydının 31.571'i özgün haliyle kalır. Kurmak için [v0.2.0 yayın paketini](https://github.com/simulasyoncan91/endfield-turkce-yama/releases/tag/v0.2.0) indirin. 0.1.x kurucusu kullanıyorsanız yeni ZIP'i mevcut yama klasörüne çıkarın ve yerel yedeklerinizi koruyun. [Güncel kapsam](translations/current/progress.json) · [Sürüm notları](docs/SURUM_NOTLARI.md)
 
 ## Amaç ve dosya değişikliği hakkında
 

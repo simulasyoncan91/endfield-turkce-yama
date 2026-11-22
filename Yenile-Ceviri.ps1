@@ -21,7 +21,11 @@ if(-not $GameData){
 $GameData=[IO.Path]::GetFullPath($GameData)
 if(-not(Test-Path -LiteralPath (Join-Path $GameData 'StreamingAssets\VFS'))){throw 'Gecerli Endfield_Data/VFS bulunamadi.'}
 if($StateRoot.StartsWith($GameData+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)-or $StateRoot -eq $GameData){throw 'Ceviri durumu oyun klasorunun disinda olmali.'}
-if(-not $Catalog){$Catalog=if($config -and $config.ApprovedCatalog){Join-Path $runtimeRoot $config.ApprovedCatalog}else{Join-Path $runtimeRoot 'translations\catalog.json'}}
+if(-not $Catalog){
+ $configured=if($config -and $config.ApprovedCatalog){[string]$config.ApprovedCatalog}else{'translations/current/catalog.json'}
+ if(($configured -replace '\\','/') -eq 'translations/catalog.json'){$configured='translations/current/catalog.json'}
+ $Catalog=Join-Path $runtimeRoot $configured
+}
 $Catalog=(Resolve-Path -LiteralPath $Catalog).Path
 [void][IO.Directory]::CreateDirectory($StateRoot)
 $lockPath=Join-Path $StateRoot 'update.lock'
@@ -43,7 +47,7 @@ function Assert-GameClosed{
  $roots=[Collections.Generic.List[string]]::new();$roots.Add([IO.Path]::GetFullPath($install))
  $officialPaths=[Collections.Generic.List[string]]::new()
  $names=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
- foreach($name in @('Endfield','Games','Launcher')){[void]$names.Add($name)}
+ foreach($name in @('Endfield','Games','Launcher','PlatformProcess')){[void]$names.Add($name)}
  if(-not (Get-Command Get-EndfieldInstallations -ErrorAction SilentlyContinue)){. (Join-Path $runtimeRoot 'bin\Find-Endfield.ps1')}
  # Only installation evidence whose validated GameData is this exact selected
  # directory may broaden the guard. A manifest for another copy is not used.
@@ -89,6 +93,35 @@ function Recover-Transaction($Journal){
  if($Journal.PSObject.Properties['previous_receipt']){if($Journal.previous_receipt){Save-Json (Join-Path $StateRoot 'last_install.json') $Journal.previous_receipt}elseif(Test-Path -LiteralPath (Join-Path $StateRoot 'last_install.json')){Remove-Item -LiteralPath (Join-Path $StateRoot 'last_install.json')}}
  $Journal.status='ROLLED_BACK';Save-Json (Join-Path $StateRoot 'transaction.json') $Journal
 }
+function Test-ActiveVfsBinding {
+ param($Context,[long]$Build,$Files,[string]$HashProperty)
+ if($null -eq $Context -or $Context.Version -ne $Build -or @($Files).Count -ne 2){return $false}
+ if($HashProperty -notin @('installed_sha256','before_sha256','after_sha256')){throw 'Invalid VFS binding hash field.'}
+ $expected=@(
+  @{Path=[string]$Context.GameMetadataPath;Hash=[string]$Context.CurrentMetaSHA256},
+  @{Path=[string]$Context.GameChunkPath;Hash=[string]$Context.CurrentChunkSHA256}
+ )
+ $seen=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+ foreach($entry in $expected){
+  if(-not $entry.Path -or -not $entry.Hash){return $false}
+  $full=[IO.Path]::GetFullPath($entry.Path)
+  if(-not $seen.Add($full)){return $false}
+  $matches=@($Files|Where-Object { $_.target -and [string]::Equals([IO.Path]::GetFullPath([string]$_.target),$full,[StringComparison]::OrdinalIgnoreCase) })
+  if($matches.Count -ne 1 -or -not $matches[0].PSObject.Properties[$HashProperty]){return $false}
+  if(-not [string]::Equals([string]$matches[0].$HashProperty,$entry.Hash,[StringComparison]::OrdinalIgnoreCase)){return $false}
+ }
+ return $true
+}
+function Save-ReceiptHistory {
+ param([string]$Path,$Receipt)
+ if(-not $Receipt -or -not(Test-Path -LiteralPath $Path -PathType Leaf)){return}
+ $history=Join-Path $StateRoot 'receipt_history'
+ [void][IO.Directory]::CreateDirectory($history)
+ $digest=Hash $Path
+ $target=Join-Path $history ('receipt-'+$Receipt.game_build+'-'+$digest+'.json')
+ if(Test-Path -LiteralPath $target){if((Hash $target)-ne $digest){throw 'Receipt history hash mismatch.'}}
+ else{Copy-Item -LiteralPath $Path -Destination $target;if((Hash $target)-ne $digest){throw 'Receipt history copy mismatch.'}}
+}
 function Invoke-Python([string]$Script,[object[]]$Arguments){
  $py=Get-Command python -ErrorAction SilentlyContinue
  if($py){& $py.Source $Script @Arguments}else{$py=Get-Command py -ErrorAction Stop;& $py.Source -3 $Script @Arguments}
@@ -99,7 +132,7 @@ try{
  $receiptPath=Join-Path $StateRoot 'last_install.json';$journalPath=Join-Path $StateRoot 'transaction.json'
  $receipt=Read-Json $receiptPath;$journal=Read-Json $journalPath
  if($journal -and $journal.status -notin @('COMMITTED','ROLLED_BACK')){
-  if($Mode -eq 'Check'){throw 'Yarim kalmis islem bulundu. Apply veya Restore ile kontrollu geri alma yapilmali.'}
+  if($Mode -in @('Check','Prepare')){throw 'Yarim kalmis islem bulundu. Apply veya Restore ile kontrollu geri alma yapilmali.'}
   Recover-Transaction $journal
   $receipt=Read-Json $receiptPath
  }
@@ -108,6 +141,12 @@ try{
   $known=$true
   foreach($f in $receipt.files){Assert-Target $f.target;if((Hash $f.target)-ne $f.installed_sha256.ToLowerInvariant()){$known=$false}}
  }
+ # An unchanged older target is not necessarily the active runtime layer.
+ # Resolve the current canonical source before any CURRENT decision.
+ . (Join-Path $runtimeRoot 'bin\VfsBridge.ps1')
+ Initialize-VfsReader
+ $activeContext=Get-VfsContext -GameData $GameData
+ if($known){$known=Test-ActiveVfsBinding -Context $activeContext -Build $receipt.game_build -Files $receipt.files -HashProperty 'installed_sha256'}
  $catalogHash=Hash $Catalog
  if($known -and $receipt.status -eq 'APPLIED' -and $receipt.catalog_sha256 -eq $catalogHash -and $Mode -ne 'Restore'){
   [pscustomobject]@{Status='CURRENT';Build=$receipt.game_build;TranslatedRecords=$receipt.translated_records;GameWrites=0;CatalogSHA256=$catalogHash}|ConvertTo-Json
@@ -176,11 +215,16 @@ try{
  if($Mode -eq 'Prepare'){
   [pscustomobject]@{Status='PREPARED';Build=$snapshotContext.Version;Plan=(Join-Path $run 'prepared_install.json');NeedsReview=(Join-Path $build 'needs_review.json');GameWrites=0}|ConvertTo-Json;return
  }
+ Save-ReceiptHistory -Path $receiptPath -Receipt $receipt
  $transaction=[pscustomobject]@{schema='endfield.local_transaction.v1';status='PREPARED';files=$files;build=$snapshotContext.Version;catalog_sha256=$catalogHash;previous_receipt=$receipt}
  Save-Json $journalPath $transaction
  try{
   Assert-GameClosed
+  $beforeContext=Get-VfsContext -GameData $GameData
+  if(-not(Test-ActiveVfsBinding -Context $beforeContext -Build $snapshotContext.Version -Files $files -HashProperty 'before_sha256')){throw 'Active game layer changed after preparation; installation stopped.'}
   foreach($f in $files){Replace-Checked $f.prepared $f.target $f.before_sha256 $f.after_sha256}
+  $afterContext=Get-VfsContext -GameData $GameData
+  if(-not(Test-ActiveVfsBinding -Context $afterContext -Build $snapshotContext.Version -Files $files -HashProperty 'after_sha256')){throw 'Installed files are no longer the active game layer; rolling back.'}
   Test-VfsStage -Snapshot $snapshot -BuildOutput $build -GameData $GameData
   $snapRelative=[IO.Path]::GetRelativePath($runtimeRoot,$snapshot)
   $receiptFiles=foreach($f in $files){

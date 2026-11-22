@@ -38,7 +38,7 @@ function Get-VfsTableView {
         }
     }
     $p = if (Test-Path -LiteralPath $primaryMetadata -PathType Leaf) { ([AnimeStudio.Endfield.EndfieldVfsLoader]::new($primary)).LoadBlockInfo($type) } else { $null }
-    $f = if (-not $AssetsRoot -and $fallbackMetadata -and (Test-Path -LiteralPath $fallbackMetadata -PathType Leaf)) { ([AnimeStudio.Endfield.EndfieldVfsLoader]::new($fallback)).LoadBlockInfo($type) } else { $null }
+    $f = if ($fallbackMetadata -and (Test-Path -LiteralPath $fallbackMetadata -PathType Leaf)) { ([AnimeStudio.Endfield.EndfieldVfsLoader]::new($fallback)).LoadBlockInfo($type) } else { $null }
     if (-not $p -and -not $f) { throw 'Table metadata is missing from both asset roots.' }
     if ($p -and $f) {
         $pp = [LocalVfsCodec]::MetadataPlain([IO.File]::ReadAllBytes($primaryMetadata))

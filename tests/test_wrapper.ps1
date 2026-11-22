@@ -2,17 +2,17 @@ $ErrorActionPreference='Stop'
 $workspace=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 [void][IO.Directory]::CreateDirectory((Join-Path $workspace 'state\tests\review'))
 . "$workspace\Turkce-Ile-Baslat.ps1" -FunctionsOnly
-$root=Join-Path $workspace ('state\tests\remote_fixture_'+[Guid]::NewGuid().ToString('N'));[void][IO.Directory]::CreateDirectory((Join-Path $root 'translations'))
+$root=Join-Path $workspace ('state\tests\remote_fixture_'+[Guid]::NewGuid().ToString('N'));[void][IO.Directory]::CreateDirectory((Join-Path $root 'translations\current'))
 function Assert-True([bool]$Condition,[string]$Message){if(-not $Condition){throw $Message}}
 function Assert-Throws([scriptblock]$Block,[string]$Message){$failed=$false;try{& $Block|Out-Null}catch{$failed=$true};if(-not $failed){throw $Message}}
 function Catalog-Bytes([string]$Tr){return ,[Text.Encoding]::UTF8.GetBytes((@{schema='endfield.translation_catalog.compact.v1';source_build=27533267;records=@(@{id='1';translation_tr=$Tr;source_sha256=('a'*64);references=@();protected_tokens=@()})}|ConvertTo-Json -Depth 10 -Compress))}
-function Descriptor([string]$Version,[byte[]]$Bytes){return @{schema='endfield.translation_release.v1';version=$Version;catalog_path='translations/catalog.json';catalog_sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($Bytes)).ToLowerInvariant();catalog_bytes=$Bytes.Length}}
-$local=Join-Path $root 'translations\catalog.json';$one=Catalog-Bytes 'Bir';[IO.File]::WriteAllBytes($local,$one);$d1=Descriptor '0.1.0' $one;$d1|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $root 'translations\latest.json')
-$valid=Test-EndfieldReleaseDescriptor $d1 'simulasyoncan91/endfield-turkce-yama' 'main';Assert-True ($valid -eq 'https://raw.githubusercontent.com/simulasyoncan91/endfield-turkce-yama/main/translations/catalog.json') 'Descriptor did not bind repository'
+function Descriptor([string]$Version,[byte[]]$Bytes){return @{schema='endfield.translation_release.v1';version=$Version;catalog_path='translations/current/catalog.json';catalog_sha256=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($Bytes)).ToLowerInvariant();catalog_bytes=$Bytes.Length}}
+$local=Join-Path $root 'translations\current\catalog.json';$one=Catalog-Bytes 'Bir';[IO.File]::WriteAllBytes($local,$one);$d1=Descriptor '0.1.0' $one;$d1|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $root 'translations\current\latest.json')
+$valid=Test-EndfieldReleaseDescriptor $d1 'simulasyoncan91/endfield-turkce-yama' 'main';Assert-True ($valid -eq 'https://raw.githubusercontent.com/simulasyoncan91/endfield-turkce-yama/main/translations/current/catalog.json') 'Descriptor did not bind repository'
 Assert-Throws {Test-EndfieldRepository '../repo' 'main'} 'Repository traversal accepted'
 Assert-Throws {Test-EndfieldRepository 'owner/repo' '../main'} 'Branch traversal accepted'
 foreach($badPath in @('../catalog.json','https://example.com/x','translations/code.ps1')){$d=@{}+$d1;$d.catalog_path=$badPath;Assert-Throws {Test-EndfieldReleaseDescriptor $d 'owner/repo' 'main'} 'Invalid catalog path accepted'}
-foreach($size in @(-1,33554433,1.5,$true)){$d=@{}+$d1;$d.catalog_bytes=$size;Assert-Throws {Test-EndfieldReleaseDescriptor $d 'owner/repo' 'main'} 'Invalid catalog size accepted'}
+foreach($size in @(-1,67108865,1.5,$true)){$d=@{}+$d1;$d.catalog_bytes=$size;Assert-Throws {Test-EndfieldReleaseDescriptor $d 'owner/repo' 'main'} 'Invalid catalog size accepted'}
 Assert-Throws {Get-EndfieldHttpsBytes 'http://raw.githubusercontent.com/owner/repo/main/x' 10} 'HTTP accepted'
 Assert-Throws {Get-EndfieldHttpsBytes 'https://example.com/x' 10} 'Foreign host accepted'
 $bad=[Text.Encoding]::UTF8.GetBytes('{"schema":"endfield.translation_catalog.compact.v1","source_build":1,"records":[{"id":"1","translation_tr":"Bir","source_en":"One","source_sha256":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}]}');Assert-Throws {Test-EndfieldCompactCatalogBytes $bad} 'English source accepted in remote compact catalog'
