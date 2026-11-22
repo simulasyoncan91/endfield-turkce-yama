@@ -27,20 +27,22 @@ Paketleri okumak ve yeniden hazırlamak için kullanılan iki açık kaynak VFS 
 
 **Epic Games aracılığıyla indirilen sürümde çalıştı. Steam ve doğrudan kurulum sürümlerinde henüz denenmedi.** Şimdilik gerçek oyun testleri Epic sürümüne odaklanır. Steam ve doğrudan kurulum için konum bulma desteği vardır; bu destek oyun içi uyumluluğun doğrulandığı anlamına gelmez.
 
-Windows, **PowerShell 7.5+ (.NET 9+)** ve **Python 3.9+** gerekir. Geniş paketin bütün ekranlarında görünüm ve metin taşması kontrolü henüz tamamlanmadı.
+1. [Yayın ZIP'ini](https://github.com/simulasyoncan91/endfield-turkce-yama/releases/tag/v0.2.0) oyun klasörünün dışında bir yere çıkar. Güncelleme yapıyorsan mevcut yama klasörünü ve oradaki `state/` yedeklerini koru.
+2. Dosya Gezgini'nde **çıkarılan yama klasörünü** aç. Adres çubuğuna `powershell` yazıp Enter'a bas. Bu yeni pencerede `pwsh --version` en az **7.5**, `python --version` en az **3.9** göstermeli. `python` komutu yoksa `py -3 --version` kullan. Eksikse [PowerShell](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows) veya [Python](https://www.python.org/downloads/windows/) kurup yeni bir pencere aç.
+3. Resmî oyun güncellemesini bitir, oyunu ve oyuna ait başlatıcıyı kapat. Tek kurulum varsa **Kur.cmd**'ye çift tıkla. Hem Epic hem Steam varsa açtığın pencerede Epic için `.\Kur.cmd -Platform Epic`, Steam için `.\Kur.cmd -Platform Steam` çalıştır. Kurucu seçimini sonraki açılışlar için kaydeder. Masaüstü kısayolu istiyorsan seçtiğin komuta `-CreateShortcut` ekle. Tek kurulum için örnek komut `.\Kur.cmd -CreateShortcut`.
+4. Aynı platformda birden fazla kopya varsa kurucunun listelediği tam veri yolunu da ver. Örneğin Epic için aşağıdaki komutta örnek yolu kendi **Endfield_Data** klasörünle değiştir.
 
-1. GitHub'dan paketi indirip oyun klasörünün dışında bir klasöre çıkar. Güncellemelerde aynı yama klasörünü ve `state/` alanını koru.
-2. Resmî oyun güncellemesini tamamla; oyunu ve oyuna ait başlatıcıyı kapat.
-3. **`Kur.cmd`** dosyasını çalıştır. Masaüstü kısayolu için: `pwsh -NoProfile -File .\Kur.ps1 -CreateShortcut`.
-4. Sonraki açılışlarda **`Turkce-Ile-Baslat.cmd`** veya oluşturduğun kısayolu kullan. Metin dili **English / İngilizce** olarak kalsın.
+```powershell
+.\Kur.cmd -Platform Epic -GameData 'D:\Oyunlar\Arknights Endfield\Endfield_Data'
+```
+
+Sonraki açılışlarda **Turkce-Ile-Baslat.cmd** veya oluşturduğun kısayolu kullan. Oyun metin dilini **English / İngilizce** seç.
 
 Bu giriş, her açılışta hem GitHub'daki çeviri sürümünü hem kurulu oyun verisini denetler. Yeni çeviri varsa yalnız veri kataloğunu indirir; SHA-256/boyut kontrolünden sonra uyumlu kayıtları yeni özgün kaynaktan derler. Ağ yoksa doğrulanmış yerel katalogla devam eder. Kod veya kurucu betiği uzaktan indirilip çalıştırılmaz.
 
-Oyun klasörü otomatik bulunamazsa veri klasörünü belirt:
+Kurulum yeri listelenmiyorsa `.\Kur.cmd -GameData 'D:\Oyunlar\Arknights Endfield\Endfield_Data'` komutundaki örnek yolu kendi klasörünle değiştir. Oyunu açmadan aynı başlatıcıyı denemek için `.\Turkce-Ile-Baslat.cmd -NoLaunch` çalıştır. Bu komut gerektiğinde yamayı uygular. Yalnız durum sorgulamak için manuel rehberdeki `-Mode Check` adımını kullan.
 
-```powershell
-pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Apply -GameData 'D:\Oyunlar\Arknights Endfield\Endfield_Data'
-```
+İndirilen betik için imza hatası görürsen [Windows'un indirme işaretini kontrol et](docs/MANUEL_KURULUM.md#windows-indirilen-betiği-engellerse).
 
 [Adım adım manuel kurulum](docs/MANUEL_KURULUM.md), [çevirinin nasıl yapıldığı](docs/CEVIRI_NASIL_YAPILIR.md) ve [katkı rehberi](docs/KATKI.md) ayrı belgelerde açıklanır.
 

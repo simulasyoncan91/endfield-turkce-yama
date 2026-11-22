@@ -6,26 +6,23 @@ Bu yol, her aşamayı görerek çeviriyi hazırlayıp kurmak içindir. Yama klas
 
 Epic Games, Steam veya doğrudan resmî PC kurulumunu kullan. Resmi başlatıcıda bekleyen güncellemeyi tamamladıktan sonra Endfield'i ve oyuna ait başlatıcıyı kapat. Epic Games Launcher'ın arka planda açık olması tek başına oyunun güncelleme yaptığı anlamına gelmez; araç uygulamadan önce dosyaları ayrıca denetler.
 
-Paket klasöründe PowerShell aç. Komutlarda `pwsh`, PowerShell 7.5+ sürümünü çalıştırır. Python 3.9 veya üzeri erişilebilir olmalıdır.
+Paket ZIP'ini oyun klasörünün dışına çıkar. Önceki sürümden güncelliyorsan aynı yama klasörünü ve özgün dosyaların yedeklerini içeren `state/` alanını koru. İki kopyayı da yamalayacaksan her biri için ayrı bir yama klasörü kullan. Dosya Gezgini'nde çıkarılan yama klasörünü aç, adres çubuğuna `powershell` yazıp Enter'a bas. Açılan pencerede `pwsh --version` en az **7.5**, `python --version` en az **3.9** göstermeli. `python` komutu yoksa `py -3 --version` kullan. Eksik aracı kurduktan sonra yeni bir pencere aç. [PowerShell kurulumu](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows) · [Python kurulumu](https://www.python.org/downloads/windows/)
 
-## Kurulumu kontrol et
+## Oyun klasörünü seç ve durumu kontrol et
 
-```powershell
-pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Check
-```
-
-Oyun otomatik bulunamazsa `Endfield_Data` klasörünü belirt:
+Aşağıdaki örnek yolu kendi kurulumundaki **Endfield_Data** klasörüne göre değiştir. Diğer komutları aynı pencerede çalıştır. Böylece Epic ve Steam birlikte kurulu olsa da her adım aynı kopyayı kullanır.
 
 ```powershell
-pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Check -GameData 'D:\Oyunlar\Arknights Endfield\Endfield_Data'
+$oyunVerisi = 'D:\Oyunlar\Arknights Endfield\Endfield_Data'
+pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Check -GameData $oyunVerisi
 ```
 
-Sonraki komutlarda da aynı `-GameData` seçeneğini kullan. Oyunun üst kurulum klasörünü veya başlatıcının sürüm klasörünü bu değer yerine verme.
+Temiz v0.2.0 kurulumunda `translations/current/catalog.json` pakette hazır gelir. Menüde Türkçe görünmesi için oyunun metin dili **English / İngilizce** olmalı.
 
 ## Çalışma kopyasını hazırla
 
 ```powershell
-pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Prepare
+pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Prepare -GameData $oyunVerisi
 ```
 
 Bu aşama güncel indekslerden İngilizce metnin yerini belirler. Katalog kayıtlarını yeni özgün kaynakla karşılaştırır; kaynağı veya bağlamı değişmiş olanları inceleme listesine ayırır. Uygun karşılıkları kopyalarda derleyip paket bütünlüğünü denetler. Oyun hedefleri değiştirilmez.
@@ -35,7 +32,7 @@ Hazırlık raporundaki oyun sürümünü, uygulanabilir kayıt sayısını ve in
 ## Yedekli kurulumu uygula
 
 ```powershell
-pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Apply
+pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Apply -GameData $oyunVerisi
 ```
 
 `Apply` hazırlığı ve doğrulamayı kendi akışında yeniden denetler. Güncel sürümün özgün dosyalarını yedekler; dosyalar incelemeden sonra değişmişse yazmadan durur. Kurulumdan sonra kurulu paket yeniden okunur ve beklenen içerikle karşılaştırılır. Başarılı sonuç ve dosya özetleri yerel uygulama kaydına yazılır.
@@ -44,17 +41,25 @@ Fiziksel `.chk` ve `.blc` dosyalarını Explorer ile tek tek kopyalamak bu akı�
 
 ## Oyunda kontrol et
 
-Otomatik sürüm kontrolü için `Turkce-Ile-Baslat.cmd` girişini kullan; bu giriş resmî başlatıcıyı açar. Metin dili English / İngilizce olarak kalsın. Menüleri, Türkçe harfleri, satır taşmalarını ve değişkenli bildirimleri kontrol et. Hikâyede sorun bildirirken görev veya konuşma bağlamını da ekle.
+Kurulumu doğruladıktan sonra oyunu normal resmî başlatıcından açabilirsin. Çeviri sürümünü de kontrol eden başlatıcıyı kullanmak için aşağıdaki komutu çalıştır. `-GameData` manuel kurulumda seçtiğin kopyayı belirtir. Gerekirse sonuna `-Platform Epic`, `-Platform Steam` veya `-Platform Direct` ekle.
+
+```powershell
+.\Turkce-Ile-Baslat.cmd -GameData $oyunVerisi
+```
+
+Oyunu açmadan başlatıcıyı denemek için aynı komuta `-NoLaunch` ekle. Bu seçenek gerektiğinde yamayı uygular. Yalnız durumu görmek için `-Mode Check` kullan.
 
 Başlatıcı arada yeni bir içerik güncellemesi yaparsa önce bu güncellemenin bitmesini bekle; oyunu ve oyuna ait başlatıcıyı kapattıktan sonra `Check` ve `Apply` adımlarını tekrarla.
 
 ## Aynı sürümün özgün dosyalarına dön
 
 ```powershell
-pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Restore
+pwsh -NoProfile -File .\Yenile-Ceviri.ps1 -Mode Restore -GameData $oyunVerisi
 ```
 
 Geri alma, yerel uygulama kaydındaki sürüm ve dosya özetlerini esas alır. Hedefler sonradan değişmişse durur. Bu durumda eski yedeği elle zorlamak yerine resmi başlatıcıdaki doğrulama veya onarım yolunu kullan; ardından yama durumunu yeniden kontrol et.
+
+Özgün dosyalarla oynamaya devam edeceksen oyunu normal resmî başlatıcından aç. Türkçe başlatıcı bir sonraki açılışta yamayı yeniden uygular.
 
 ## Sorunu bildir
 
@@ -62,12 +67,20 @@ Komutun `Check`, `Prepare`, `Apply` veya `Restore` aşamasında olduğunu, oyun 
 
 ## Platformu açıkça seç
 
-Birden fazla kurulum bulunduysa:
+Türkçe başlatıcıya her seferinde yol vermek istemiyorsan aşağıdaki örnekle kurulum seçimini bir kez kaydet. Bu işlem de yamayı uygular. Epic yerine Steam veya Direct kullanıyorsan platform adını ona göre değiştir. Masaüstü kısayolu istiyorsan komuta `-CreateShortcut` ekle.
 
 ```powershell
-pwsh -NoProfile -File .\Kur.ps1 -Platform Steam -GameData 'D:\SteamLibrary\steamapps\common\Arknights Endfield\Endfield_Data' -CreateShortcut
+.\Kur.cmd -Platform Epic -GameData $oyunVerisi
 ```
 
-Epic için `-Platform Epic`, doğrudan indirme için `-Platform Direct` kullanılır. Örnek yollar sabit zorunluluk değildir; kendi `Endfield_Data` konumunu belirt. Doğrudan kurulumda resmî başlatıcı otomatik bulunmazsa yerel `config.json` içindeki `OfficialLauncher` alanını doğru resmî yürütülebilir dosyaya ayarla.
+Doğrudan kurulumda resmî başlatıcı otomatik bulunmazsa yerel `config.json` içindeki `OfficialLauncher` alanına doğru resmî yürütülebilir dosyayı gir.
 
-Kurucu yürütme politikasını veya güvenlik yazılımını değiştirmez. Betik sistem politikan tarafından engellenirse hata metnini esas al; kurum politikasını aşma. [PowerShell resmî kurulum bilgisi](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows), [Python resmî indirme](https://www.python.org/downloads/windows/).
+## Windows indirilen betiği engellerse
+
+“Betik dijital olarak imzalanmamış” hatası görürsen önce [sürüm sayfasından](https://github.com/simulasyoncan91/endfield-turkce-yama/releases/tag/v0.2.0) ZIP'in yanındaki aynı adlı `.sha256` dosyasını indir. ZIP'in bulunduğu klasörde PowerShell açıp aşağıdaki komutu çalıştır. Çıkan değeri `.sha256` dosyasındaki değerle karşılaştır.
+
+```powershell
+Get-FileHash -Algorithm SHA256 -LiteralPath '.\endfield-turkce-yama-v0.2.0.zip'
+```
+
+Değerler eşleşiyorsa Windows Dosya Gezgini'nde ZIP'e sağ tıkla, **Özellikler → Genel** altında **Engellemeyi kaldır** görünüyorsa seç ve **Uygula**'ya bas. ZIP'i tekrar çıkarıp kurulumu çalıştır. Bu işlem yalnızca seçtiğin indirmeyi etkiler. Kurumsal cihazında imzalı betik politikası uygulanıyorsa yöneticine başvur.

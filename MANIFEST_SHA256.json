@@ -56,8 +56,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 8105,
-      "sha256": "fa57eaeec96985fca3e030affda4100e8c79a6d5b40e02c4ca47bfe3dbf3fa68"
+      "bytes": 9349,
+      "sha256": "72874378a6f929d540ab74ea1c20f87f450eceda159e5267401216f5e9e926c1"
     },
     {
       "path": "SECURITY.md",
@@ -156,8 +156,8 @@
     },
     {
       "path": "docs/MANUEL_KURULUM.md",
-      "bytes": 4829,
-      "sha256": "b41f5552947be89ef81dbb42c239714eaa271892cac98dd360fd144a7b9ec289"
+      "bytes": 6524,
+      "sha256": "43fce18d0a7f523d1d2262315a14417c591bb9b6a6c56c9f29b600036a69d37c"
     },
     {
       "path": "docs/SURUM_NOTLARI.md",
